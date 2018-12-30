@@ -1,0 +1,48 @@
+<mat-grid-list cols="1" rowHeight="100">
+  <mat-grid-tile [colspan]="1" [rowspan]="2">
+    <div>
+      <h1 class="mat-h1 mat-headline text-center">Bem vindo ao MyPoopy Admin</h1>
+      <p class="mat-subheading-2 text-justify">
+        Aqui você poderá gerenciar e monitar os eventos que são gerados no MyPoopy Mobile. 
+      </p>
+      <p class="mat-subheading-2 text-justify">Para começar bastar fazer o login!</p>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="1" [rowspan]="3">
+    <div class="main-container w-75">
+      <mat-horizontal-stepper [linear]="isLinear" #stepper>
+
+        <mat-step [stepControl]="step2Done">
+          <form [formGroup]="firstFormGroup" (ngSubmit)="submit(firstFormGroup.value)">
+            <ng-template matStepLabel>Credenciais</ng-template>
+            <div class="example-container w-50">
+              <mat-form-field>
+                <input matInput placeholder="Digite seu email" formControlName="email" required>
+                <mat-error *ngIf="firstFormGroup.controls['email'].invalid">{{ getErrorMessage() }}</mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="Digite sua senha" formControlName="password" [type]="hide ? 'password' : 'text'">
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </mat-form-field>
+              <button mat-raised-button matStepperNext color="primary" [disabled]="firstFormGroup.invalid">Login</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="step2Done">
+          <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Pin code</ng-template>
+            <mat-form-field>
+              <input matInput placeholder="Address" formControlName="secondCtrl" required>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperPrevious>voltar</button>
+              <button mat-button>Confirmar</button>
+            </div>
+          </form>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
