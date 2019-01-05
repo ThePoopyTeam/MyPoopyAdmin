@@ -1,5 +1,8 @@
+import { AuthenticationService } from './../authentication.service';
 import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { sha256 } from 'js-sha256';
+import { Router } from '@angular/router';
 
 export interface Tile {
   color: string;
@@ -14,32 +17,46 @@ export interface Tile {
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
-  step2Done = false;
-  isLinear = false;
   firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+  hide = true;
 
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder,
+              private auth: AuthenticationService,
+              private router: Router) {}
 
   ngOnInit() {
-    this.firstFormGroup = this._formBuilder.group({
+    this.firstFormGroup = this.formBuilder.group({
       email: ['',
-        Validators.compose([ Validators.required, Validators.email ])],
+        Validators.compose([
+            Validators.required,
+            Validators.pattern(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/) ])],
       password: ['', Validators.compose([ Validators.required, Validators.minLength(5) ])]
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
     });
   }
 
   getErrorMessage() {
-    return this.firstFormGroup.controls['email'].hasError('required') ? 'You must enter a value' :
-        this.firstFormGroup.controls['email'].hasError('email') ? 'Not a valid email' :
-            '';
+    return this.firstFormGroup.controls['email'].hasError('required') ? 'Você deve digitar seu email' :
+        this.firstFormGroup.controls['email'].hasError('email') ? 'Email inválido' : '';
   }
 
-  submit(values) {
-    console.log('SUBMITTED => ', values);
+  submit(values: User) {
+    const user = {
+      email: values.email,
+      password: sha256(values.password)
+    };
+
+    console.log('USER ==> ', user);
+    this.authentication(user);
   }
 
+
+  private authentication(user: User) {
+    this.router.navigate(['/dashboard']);
+    // this.auth
+  }
+}
+
+export interface User {
+  email: string;
+  password: string;
 }
