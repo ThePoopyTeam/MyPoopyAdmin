@@ -1,4 +1,5 @@
-import { AuthenticationService } from './../authentication.service';
+import { LocalStorageService } from './../../core/localstorage.service';
+import { AuthenticationService } from '../../core/authentication.service';
 import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators, FormGroup, FormBuilder} from '@angular/forms';
 import { sha256 } from 'js-sha256';
@@ -20,9 +21,13 @@ export class AuthComponent implements OnInit {
   firstFormGroup: FormGroup;
   hide = true;
 
-  constructor(private formBuilder: FormBuilder,
-              private auth: AuthenticationService,
-              private router: Router) {}
+  private endpoint = 'user/login';
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private auth: AuthenticationService,
+    private router: Router,
+    private storageService: LocalStorageService) {}
 
   ngOnInit() {
     this.firstFormGroup = this.formBuilder.group({
@@ -42,17 +47,17 @@ export class AuthComponent implements OnInit {
   submit(values: User) {
     const user = {
       email: values.email,
-      password: sha256(values.password)
+      password: sha256(values.password).toLocaleUpperCase()
     };
-
-    console.log('USER ==> ', user);
     this.authentication(user);
   }
 
 
   private authentication(user: User) {
-    this.router.navigate(['/dashboard']);
-    // this.auth
+    this.auth.post(this.endpoint, user).subscribe((res: any) => {
+      this.storageService.setToken(res.token);
+      this.router.navigate(['/dashboard']);
+    }, err => { console.error('LOGIN ERROR => ', err); });
   }
 }
 

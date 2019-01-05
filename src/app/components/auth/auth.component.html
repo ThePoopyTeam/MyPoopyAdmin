@@ -25,45 +25,5 @@
         </div>
       </form>
     </div>
-    <!-- <div class="main-container w-75">
-      <mat-horizontal-stepper [linear]="isLinear" #stepper>
-
-        <mat-step [stepControl]="firstFormGroup">
-          <form [formGroup]="firstFormGroup" (ngSubmit)="submitStep1(firstFormGroup.value)">
-            <ng-template matStepLabel>Credenciais</ng-template>
-            <div class="example-container w-50">
-              <p class="headline">
-                <strong>Digite suas credenciais e você reberá um email com o código de acesso.</strong>
-              </p>
-              <mat-form-field>
-                <input matInput placeholder="Digite seu email" formControlName="email" required>
-                <mat-error *ngIf="firstFormGroup.controls['email'].invalid">{{ getErrorMessage() }}</mat-error>
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput placeholder="Digite sua senha" formControlName="password" [type]="hide ? 'password' : 'text'">
-                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </mat-form-field>
-              <button mat-raised-button matStepperNext color="primary" [disabled]="firstFormGroup.invalid">Login</button>
-            </div>
-          </form>
-        </mat-step>
-
-        <mat-step [stepControl]="secondFormGroup" disabled>
-          <form [formGroup]="secondFormGroup" (ngSubmit)="submitStep2(secondFormGroup.value)">
-            <ng-template matStepLabel>Pin code</ng-template>
-            <div class="example-container w-50">
-              <p class="headline">
-                <strong>Digite o código que você recebeu para se autenticar no sistema.</strong>
-              </p>
-              <mat-form-field>
-                <input matInput placeholder="Digite o código de confirmação" formControlName="pincode" [type]="hide ? 'password' : 'text'">
-                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-              </mat-form-field>
-              <button mat-raised-button matStepperNext color="primary" [disabled]="secondFormGroup.invalid">Confirmar</button>
-            </div>
-          </form>
-        </mat-step>
-      </mat-horizontal-stepper>
-    </div> -->
   </mat-grid-tile>
 </mat-grid-list>
